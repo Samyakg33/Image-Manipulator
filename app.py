@@ -144,6 +144,8 @@ def download_file(image_path):
     return send_file(image_path, as_attachment=True)
 
 if __name__ == '__main__':
+    import os
     if not os.path.exists(app.config['UPLOAD_FOLDER']):
         os.makedirs(app.config['UPLOAD_FOLDER'])
-    app.run(debug=True)
+    port = int(os.getenv("PORT", 10000))  # Use Render's port or default to 10000
+    app.run(host='0.0.0.0', port=port, debug=True)
