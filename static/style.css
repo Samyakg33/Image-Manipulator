@@ -1,0 +1,19 @@
+body { padding: 20px; background-color: #f8f9fa; }
+.header { background-color: #007bff; color: white; padding: 10px; text-align: center; margin-bottom: 20px; }
+.image-container { border: 1px solid #ddd; min-height: 300px; background-color: #e9ecef; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; }
+.controls { display: flex; flex-wrap: wrap; gap: 10px; }
+.btn-group { flex: 1 1 100%; margin-bottom: 10px; }
+.btn-group.filters { display: flex; flex-wrap: wrap; gap: 5px; }
+.btn-group.filters button { flex: 1 1 calc(25% - 5px); min-width: 100px; } /* 4 buttons per row on large screens */
+@media (max-width: 1200px) {
+    .btn-group.filters button { flex: 1 1 calc(33.33% - 5px); } /* 3 buttons per row on medium screens */
+}
+@media (max-width: 768px) {
+    .controls { flex-direction: column; }
+    .btn-group.filters button { flex: 1 1 calc(50% - 5px); } /* 2 buttons per row on tablets */
+}
+@media (max-width: 480px) {
+    .btn-group.filters button { flex: 1 1 100%; } /* 1 button per row on phones */
+}
+.action-buttons { margin-top: 20px; display: flex; gap: 10px; }
+.action-buttons .btn { flex: 1; }

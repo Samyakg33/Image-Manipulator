@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Manipulator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="header">Image Manipulator</div>
+    <div class="container">
+        <form method="POST" enctype="multipart/form-data">
+            <div class="mb-3">
+                <input type="file" class="form-control" name="file" id="fileInput">
+                <button type="submit" class="btn btn-primary mt-2">Upload</button>
+            </div>
+            {% if message %}
+                <div class="alert alert-warning">{{ message }}</div>
+            {% endif %}
+        </form>
+        {% if filename %}
+            <div class="image-container">
+                {% if image_path %}
+                    <img src="{{ url_for('static', filename=image_path.replace('static/', '')) }}" alt="Processed Image" style="max-width: 100%; max-height: 300px;">
+                {% else %}
+                    <p>No image processed yet.</p>
+                {% endif %}
+            </div>
+            <div class="controls">
+                <div class="btn-group filters">
+                    <button type="button" class="btn btn-primary" onclick="applyFilter('negative')">Negative</button>
+                    <button type="button" class="btn btn-primary" onclick="applyFilter('mean')">Mean</button>
+                    <button type="button" class="btn btn-primary" onclick="applyFilter('gaussian')">Gaussian</button>
+                    <button type="button" class="btn btn-primary" onclick="applyFilter('median')">Median</button>
+                    <button type="button" class="btn btn-primary" onclick="applyFilter('laplacian')">Laplacian</button>
+                    <button type="button" class="btn btn-primary" onclick="applyFilter('highpass')">High-pass</button>
+                    <button type="button" class="btn btn-primary" onclick="applyFilter('binary')">Binary</button>
+                    <button type="button" class="btn btn-primary" onclick="applyFilter('otsu')">Otsu</button>
+                    <button type="button" class="btn btn-primary" onclick="applyFilter('sobel')">Sobel</button>
+                    <button type="button" class="btn btn-primary" onclick="applyFilter('prewitt')">Prewitt</button>
+                    <button type="button" class="btn btn-primary" onclick="applyFilter('canny')">Canny</button>
+                </div>
+            </div>
+            <div class="action-buttons">
+                <a href="{{ url_for('download_file', image_path=image_path) }}" class="btn btn-info">Download Image</a>
+                <button type="button" class="btn btn-danger" onclick="removeFilter()">Remove Filter</button>
+            </div>
+        {% endif %}
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function applyFilter(filterType) {
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.enctype = 'multipart/form-data';
+            const filterInput = document.createElement('input');
+            filterInput.type = 'hidden';
+            filterInput.name = 'filter';
+            filterInput.value = filterType;
+            form.appendChild(filterInput);
+            {% if filename %}
+                const filenameInput = document.createElement('input');
+                filenameInput.type = 'hidden';
+                filenameInput.name = 'filename';
+                filenameInput.value = '{{ filename }}';
+                form.appendChild(filenameInput);
+            {% endif %}
+            document.body.appendChild(form);
+            form.submit();
+        }
+        function removeFilter() {
+            window.location.href = '/';
+        }
+    </script>
+</body>
+</html>
